@@ -92,7 +92,7 @@ const asyncForEachRunScript = async (files) => {
     //   const element = array[i];
     // }
 
-    const script = `bash eval_competition/covid19mlia-mt-evaluation/calc_scores.sh eval_competition/covid19mlia-mt-evaluation/tests/en-es/ref_test_enes.es.sgm eval_competition/covid19mlia-mt-evaluation/pangeanic_task3_round1_en2es_constrained_prueba.sgm`;
+    const script = `bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests/en-es/ref_test_enes.es.sgm /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/pangeanic_task3_round1_en2es_constrained_prueba.sgm`;
     const myShellScript = exec(script);
     myShellScript.stdout.on("data", (data) => {
       console.log(data);
