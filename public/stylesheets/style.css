@@ -1,0 +1,52 @@
+body {
+  color: #666;
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+}
+.fa-border {
+  border: 0.08em solid #eee;
+  border-radius: 0.1em;
+  padding: 0.2em 0.25em 0.15em;
+}
+
+#headerTask3 {
+  padding: 1em 0 1em 0;
+  background-color: #4686a0;
+  color: rgba(255, 255, 255, 0.75);
+  background-attachment: fixed, fixed, fixed;
+  /* background-image: url(images/overlay2.png), url(images/overlay3.svg), linear-gradient(45deg, #9dc66b 5%, #BACEEC 30%, #0078C9); */
+  background-image: url(images/overlay2.png), url(images/overlay3.svg),
+    linear-gradient(45deg, #efccff 10%, #b266ff 50%, #7f00ff);
+  background-position: top left, center center, center center;
+  background-size: auto, cover, cover;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+}
+
+#headerTask3 a {
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+#headerTask3 a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.inner {
+  -moz-transition: -moz-transform 1.5s ease, opacity 2s ease;
+  -webkit-transition: -webkit-transform 1.5s ease, opacity 2s ease;
+  -ms-transition: -ms-transform 1.5s ease, opacity 2s ease;
+  transition: transform 1.5s ease, opacity 2s ease;
+  -moz-transition-delay: 0.25s;
+  -webkit-transition-delay: 0.25s;
+  -ms-transition-delay: 0.25s;
+  transition-delay: 0.25s;
+  -moz-transform: scale(1);
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "epastor",
+    "database": "covid19-mlia",
+    "host": "prod.pangeamt.com",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "epastor",
+    "database": "covid19-mlia",
+    "host": "prod.pangeamt.com",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "epastor",
+    "database": "covid19-mlia",
+    "host": "prod.pangeamt.com",
+    "dialect": "mysql"
+  }
+}
