@@ -2,9 +2,7 @@ const fs = require("fs");
 const httpStatus = require("http-status");
 const path = require("path");
 const moment = require("moment");
-const exec = require('child_process').exec, child;
-
-
+const exec = require("child_process").exec;
 
 const ApiError = require("./ApiError");
 const db = require("./../models");
@@ -94,14 +92,14 @@ const asyncForEachRunScript = async (files) => {
     //   const element = array[i];
     // }
 
-    const script=`bash eval_competition/covid19mlia-mt-evaluation/calc_scores.sh eval_competition/covid19mlia-mt-evaluation/tests/en-es/ref_test_enes.es.sgm eval_competition/covid19mlia-mt-evaluation/pangeanic_task3_round1_en2es_constrained_prueba.sgm`
+    const script = `bash eval_competition/covid19mlia-mt-evaluation/calc_scores.sh eval_competition/covid19mlia-mt-evaluation/tests/en-es/ref_test_enes.es.sgm eval_competition/covid19mlia-mt-evaluation/pangeanic_task3_round1_en2es_constrained_prueba.sgm`;
     const myShellScript = exec(script);
-    myShellScript.stdout.on('data', (data)=>{
-        console.log(data); 
-        // do whatever you want here with data
+    myShellScript.stdout.on("data", (data) => {
+      console.log(data);
+      // do whatever you want here with data
     });
-    myShellScript.stderr.on('data', (data)=>{
-        console.error(data);
+    myShellScript.stderr.on("data", (data) => {
+      console.error(data);
     });
 
     return true;
