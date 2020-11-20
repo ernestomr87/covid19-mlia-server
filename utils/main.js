@@ -63,14 +63,8 @@ const asyncForEachWriteFiles = async (teams) => {
 
       await runCreateAndWrite(directoryPath, texts);
 
-      // const scripts = `
-      //                  git add .
-      //                  git commit -a -m "commit" (do not need commit message either)
-      //                  git push`;
-      let scripts = `cd repos`;
-      await runScript(scripts);
-      scripts = `ls`;
-      const aux = await runScript(scripts);
+      const script = `bash /home/ubuntu/covid-19/covid19-mlia-server/utils/run.sh ${folder}`;
+      const aux = await runScript(script);
       console.log(aux);
     }
 
