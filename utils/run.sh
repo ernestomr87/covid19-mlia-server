@@ -2,7 +2,7 @@
 
 
 FOLDER=$1
-FOLDER=$2
+REPO=$2
 
 cd /home/ubuntu/covid-19/covid19-mlia-server/repos/$FOLDER
 git config --local user.email "m.garcia@pangeanic.com"
