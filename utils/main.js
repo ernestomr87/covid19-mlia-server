@@ -143,7 +143,7 @@ const runCreateAndWrite = (file, texts) => {
     var stream = fs.createWriteStream(file);
     stream.once("open", function (fd) {
       stream.write(`${texts[0]}\n`);
-      stream.write(`${texts[2]}\n`);
+      stream.write(`${texts[1]}\n`);
       stream.end();
       resolve(true);
     });
