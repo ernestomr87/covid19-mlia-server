@@ -31,6 +31,16 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api", indexRouter);
 // app.use("/users", usersRouter);
 
+app.use(express.static(path.join(__dirname, "./build")));
+
+// // Handle React routing, return all requests to React app
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "./build/", "index.html"));
+});
+app.get("*", function (req, res) {
+  res.redirect(301, req.hostname);
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
