@@ -63,7 +63,9 @@ const asyncForEachWriteFiles = async (teams) => {
 
       await runCreateAndWrite(directoryPath, texts);
 
-      const script = `bash /home/ubuntu/covid-19/covid19-mlia-server/utils/run.sh ${folder}`;
+      //bitbucket.org/covid19-mlia/sample-participant-repository.git
+      const repo = files[i].Team.repo.split("https://").join("");
+      const script = `bash /home/ubuntu/covid-19/covid19-mlia-server/utils/run.sh ${folder} ${repo}`;
       const aux = await runScript(script);
       console.log(aux);
     }
