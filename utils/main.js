@@ -221,10 +221,10 @@ const initTeamDb = async () => {
 const Main = {
   initialization: async () => {
     try {
-      const teams = await initTeamDb();
-      await asyncForEachCloneRepos(teams);
-      const files = await asyncForEachSearchFiles(teams);
-      await asyncForEachRunScript(files);
+      // const teams = await initTeamDb();
+      // await asyncForEachCloneRepos(teams);
+      // const files = await asyncForEachSearchFiles(teams);
+      // await asyncForEachRunScript(files);
 
       await asyncForEachWriteFiles();
       console.log("FINISH-----");
