@@ -38,6 +38,41 @@ const asyncForEachCloneRepos = async (teams) => {
   }
 };
 
+const asyncForEachPushRepos = async (teams) => {
+  try {
+    let files = await File.findAll({
+      include: [{ model: Team }],
+    });
+
+    files = files.map((item) => {
+      return item.get({ plain: true });
+    });
+
+    for (let i = 0; i < files.length; i++) {
+      const folder = files[i].Team.team;
+      const directoryPath = path.join(
+        __dirname.split("utils").join("repos"),
+        `${folder}/score/task3/round1/${files[i].name
+          .split("sgm")
+          .join("score")}`
+      );
+
+      const texts = [];
+      texts.push(`BLEU ${files[i].BLEU}`);
+      texts.push(`ChrF ${files[i].ChrF}`);
+
+      await runCreateAndWrite(directoryPath, texts);
+    }
+
+    console.log("---------------------------");
+    console.log("All repositories are cloned");
+    return true;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
 const asyncForEachSearchFiles = async (teams) => {
   try {
     const allFiles = [];
@@ -99,6 +134,18 @@ const runScript = (script) => {
     myShellScript.stderr.on("data", (data) => {
       console.error(data);
       resolve("");
+    });
+  });
+};
+
+const runCreateAndWrite = (file, texts) => {
+  return new Promise((resolve) => {
+    var stream = fs.createWriteStream(file);
+    stream.once("open", function (fd) {
+      stream.write(`${texts[i]}\n`);
+      stream.write(`${texts[i]}\n`);
+      stream.end();
+      resolve(true);
     });
   });
 };
@@ -169,9 +216,11 @@ const Main = {
   initialization: async () => {
     try {
       const teams = await initTeamDb();
-      await asyncForEachCloneRepos(teams);
-      const files = await asyncForEachSearchFiles(teams);
-      await asyncForEachRunScript(files);
+      // await asyncForEachCloneRepos(teams);
+      // const files = await asyncForEachSearchFiles(teams);
+      // await asyncForEachRunScript(files);
+
+      await asyncForEachPushRepos();
       console.log("FINISH-----");
     } catch (error) {
       console.log(error);
