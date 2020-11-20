@@ -132,7 +132,7 @@ const Main = {
   initialization: async () => {
     try {
       const teams = await initTeamDb();
-      // await asyncForEachCloneRepos(teams);
+      await asyncForEachCloneRepos(teams);
       const files = await asyncForEachSearchFiles(teams);
       await asyncForEachRunScript(files);
       console.log("FINISH-----");
