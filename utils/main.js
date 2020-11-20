@@ -142,8 +142,8 @@ const runCreateAndWrite = (file, texts) => {
   return new Promise((resolve) => {
     var stream = fs.createWriteStream(file);
     stream.once("open", function (fd) {
-      stream.write(`${texts[i]}\n`);
-      stream.write(`${texts[i]}\n`);
+      stream.write(`${texts[0]}\n`);
+      stream.write(`${texts[2]}\n`);
       stream.end();
       resolve(true);
     });
