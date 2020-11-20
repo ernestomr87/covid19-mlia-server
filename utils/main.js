@@ -91,18 +91,21 @@ const asyncForEachRunScript = async (files) => {
     for (let i = 0; i < files.length; i++) {
       const script = `bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests/en-${files[i].tgt}/ref_test_en${files[i].tgt}.${files[i].tgt}.sgm ${files[i].location}`;
       console.log(script);
-    }
 
-    const myShellScript = exec(script);
-    myShellScript.stdout.on("data", (data) => {
-      console.log("OK");
-      console.log(data);
-      // do whatever you want here with data
-    });
-    myShellScript.stderr.on("data", (data) => {
-      console.log("KO");
-      console.error(data);
-    });
+      const myShellScript = exec(script);
+      myShellScript.stdout.on("data", (data) => {
+        console.log("OK");
+        console.log(data);
+        // do whatever you want here with data
+      });
+      myShellScript.stderr.on("data", (data) => {
+        console.log("KO");
+        console.error(data);
+      });
+    }
+    console.log("Finish Scripts");
+
+    // bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests/en-sv/ref_test_ensv.sv.sgm /home/ubuntu/covid-19/covid19-mlia-server/repos/Baseline/submission/task3/round1/baseline_task3_round1_en2sv_constrained_rnn.sgm
 
     return true;
   } catch (error) {
@@ -131,10 +134,15 @@ const initTeamDb = async () => {
 const Main = {
   initialization: async () => {
     try {
-      const teams = await initTeamDb();
-      await asyncForEachCloneRepos(teams);
-      const files = await asyncForEachSearchFiles(teams);
-      await asyncForEachRunScript(files);
+      // const teams = await initTeamDb();
+      // await asyncForEachCloneRepos(teams);
+      // const files = await asyncForEachSearchFiles(teams);
+
+      let docs = await File.findAll();
+      docs = docs.map((doc) => {
+        return doc.get({ plain: true });
+      });
+      await asyncForEachRunScript(docs);
       console.log("FINISH-----");
     } catch (error) {
       console.log(error);
