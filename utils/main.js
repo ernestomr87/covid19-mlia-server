@@ -98,7 +98,7 @@ const runScript = (script) => {
     });
     myShellScript.stderr.on("data", (data) => {
       console.error(data);
-      reject(data);
+      resolve("");
     });
   });
 };
@@ -118,6 +118,19 @@ const asyncForEachRunScript = async (files) => {
             description: aux[3],
             BLEU: aux[4],
             ChrF: aux[5],
+          },
+          {
+            where: {
+              id: files[i].id,
+            },
+          }
+        );
+      } else {
+        await File.update(
+          {
+            description: "",
+            BLEU: "#ERROR",
+            ChrF: "#ERROR",
           },
           {
             where: {
