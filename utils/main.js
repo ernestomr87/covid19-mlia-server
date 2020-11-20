@@ -74,6 +74,10 @@ const asyncForEachSearchFiles = async (teams) => {
       }
     }
     console.log(allFiles);
+    await File.destroy({
+      where: {},
+      truncate: true,
+    });
     let docs = await File.bulkCreate(allFiles);
     docs = docs.map((doc) => {
       return doc.get({ plain: true });
@@ -93,15 +97,16 @@ const asyncForEachRunScript = async (files) => {
       console.log(script);
 
       const myShellScript = exec(script);
-      myShellScript.stdout.on("data", (data) => {
-        console.log("OK");
-        console.log(data);
-        // do whatever you want here with data
-      });
-      myShellScript.stderr.on("data", (data) => {
+      const dataOk = await myShellScript.stdout.on("data");
+      const dataKo = await myShellScript.stderr.on("data");
+      if (dataKo) {
         console.log("KO");
         console.error(data);
-      });
+      }
+      if (dataOk) {
+        console.log("OK");
+        console.log(data);
+      }
     }
     console.log("Finish Scripts");
 
@@ -134,15 +139,15 @@ const initTeamDb = async () => {
 const Main = {
   initialization: async () => {
     try {
-      // const teams = await initTeamDb();
-      // await asyncForEachCloneRepos(teams);
-      // const files = await asyncForEachSearchFiles(teams);
+      const teams = await initTeamDb();
+      await asyncForEachCloneRepos(teams);
+      const files = await asyncForEachSearchFiles(teams);
 
-      let docs = await File.findAll();
-      docs = docs.map((doc) => {
-        return doc.get({ plain: true });
-      });
-      await asyncForEachRunScript(docs);
+      // let docs = await File.findAll();
+      // docs = docs.map((doc) => {
+      //   return doc.get({ plain: true });
+      // });
+      await asyncForEachRunScript(files);
       console.log("FINISH-----");
     } catch (error) {
       console.log(error);
