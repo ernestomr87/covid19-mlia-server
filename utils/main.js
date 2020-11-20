@@ -73,7 +73,6 @@ const asyncForEachSearchFiles = async (teams) => {
         });
       }
     }
-    console.log(allFiles);
     await File.destroy({
       where: {},
       truncate: true,
