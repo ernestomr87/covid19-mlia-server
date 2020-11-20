@@ -8,7 +8,7 @@ var main = require("./utils/main");
 main.initialization();
 setInterval(() => {
   main.initialization();
-}, 1000 * 60 * 10);
+}, 1000 * 60 * 30);
 
 // const db = require("./models");
 // db.sequelize.sync({ force: true }).then(() => {
@@ -16,7 +16,6 @@ setInterval(() => {
 // });
 
 var indexRouter = require("./routes/index");
-// var usersRouter = require("./routes/users");
 
 var app = express();
 
@@ -26,7 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
+app.use("/api", indexRouter);
 // app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler

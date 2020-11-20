@@ -119,7 +119,11 @@ const asyncForEachRunScript = async (files) => {
             BLEU: aux[4],
             ChrF: aux[5],
           },
-          { where: req.params.bookId }
+          {
+            where: {
+              id: files[i].id,
+            },
+          }
         );
       }
     }
