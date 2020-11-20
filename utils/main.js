@@ -88,18 +88,19 @@ const asyncForEachSearchFiles = async (teams) => {
 
 const asyncForEachRunScript = async (files) => {
   try {
-    // for (let i = 0; i < files.length; i++) {
-    //   const element = array[i];
-    // }
+    for (let i = 0; i < files.length; i++) {
+      const script = `bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests/en-${files[i].tgt}/ref_test_en${files[i].tgt}.${files[i].tgt}.sgm ${files[i].location}`;
+      console.log(script);
+    }
 
-    const script = `bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests/en-es/ref_test_enes.es.sgm /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/baseline_task3_round1_en2es_constrained_rnn.sgm`;
-    console.log(script);
     const myShellScript = exec(script);
     myShellScript.stdout.on("data", (data) => {
+      console.log("OK");
       console.log(data);
       // do whatever you want here with data
     });
     myShellScript.stderr.on("data", (data) => {
+      console.log("KO");
       console.error(data);
     });
 
