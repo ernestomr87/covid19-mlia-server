@@ -68,7 +68,7 @@ const asyncForEachWriteFiles = async (teams) => {
       //                  git commit -a -m "commit" (do not need commit message either)
       //                  git push`;
       let scripts = `cd repos/${folder}`;
-      await runScript(scripts);
+      // await runScript(scripts);
       scripts = `ls`;
       const aux = await runScript(scripts);
       console.log(aux);
