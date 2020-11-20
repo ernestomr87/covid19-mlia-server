@@ -1,4 +1,5 @@
 var createError = require("http-errors");
+var cors = require("cors");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -18,6 +19,8 @@ setInterval(() => {
 var indexRouter = require("./routes/index");
 
 var app = express();
+
+app.use(cors());
 
 app.use(logger("dev"));
 app.use(express.json());
