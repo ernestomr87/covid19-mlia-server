@@ -5,7 +5,7 @@ FOLDER=$1
 
 cd /home/ubuntu/covid-19/covid19-mlia-server/repos/$FOLDER
 git add .
-git commit -a -m "commit" (do not need commit message either)
+git commit -a -m "commit"
 git push
 
 
