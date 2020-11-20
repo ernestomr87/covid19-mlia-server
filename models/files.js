@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       src: DataTypes.STRING,
       tgt: DataTypes.STRING,
       constrained: DataTypes.STRING,
+      description: DataTypes.STRING,
       BLEU: DataTypes.STRING,
       ChrF: DataTypes.STRING,
     },

@@ -6,7 +6,7 @@ const exec = require("child_process").exec;
 
 const ApiError = require("./ApiError");
 const db = require("./../models");
-const { teams } = require("../constants");
+const constants = require("../constants");
 const git = require("./git");
 
 const Team = db.Team;
@@ -109,13 +109,21 @@ const asyncForEachRunScript = async (files) => {
       const script = `bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests/en-${files[i].tgt}/ref_test_en${files[i].tgt}.${files[i].tgt}.sgm ${files[i].location}`;
       console.log(script);
       const dataOk = await runScript(script);
-      console.log("KO");
+      console.log("Ok");
       console.log(dataOk);
+      const aux = dataOk.split(" ");
+      if (aux.length === 6) {
+        await File.update(
+          {
+            description: aux[3],
+            BLEU: aux[4],
+            ChrF: aux[5],
+          },
+          { where: req.params.bookId }
+        );
+      }
     }
     console.log("Finish Scripts");
-
-    // bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests/en-sv/ref_test_ensv.sv.sgm /home/ubuntu/covid-19/covid19-mlia-server/repos/Baseline/submission/task3/round1/baseline_task3_round1_en2sv_constrained_rnn.sgm
-
     return true;
   } catch (error) {
     console.log(error);
@@ -125,13 +133,13 @@ const asyncForEachRunScript = async (files) => {
 
 const initTeamDb = async () => {
   try {
-    // const teams = teams.map((item) => {
+    // const teams = constants.teams.map((item) => {
     //   if (item.registrationDate)
     //     item.registrationDate = moment(item.registrationDate).valueOf();
     //   return item;
     // });
-    // await Team.bulkCreate(teams);
-    // return true;
+    // const docs = await Team.bulkCreate(teams);
+    // return docs;
     const teams = await Team.findAll();
     return teams;
   } catch (error) {
@@ -146,11 +154,6 @@ const Main = {
       const teams = await initTeamDb();
       await asyncForEachCloneRepos(teams);
       const files = await asyncForEachSearchFiles(teams);
-
-      // let docs = await File.findAll();
-      // docs = docs.map((doc) => {
-      //   return doc.get({ plain: true });
-      // });
       await asyncForEachRunScript(files);
       console.log("FINISH-----");
     } catch (error) {
