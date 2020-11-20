@@ -38,7 +38,7 @@ const asyncForEachCloneRepos = async (teams) => {
   }
 };
 
-const asyncForEachPushRepos = async (teams) => {
+const asyncForEachWriteFiles = async (teams) => {
   try {
     let files = await File.findAll({
       include: [{ model: Team }],
@@ -62,6 +62,14 @@ const asyncForEachPushRepos = async (teams) => {
       texts.push(`ChrF ${files[i].ChrF}`);
 
       await runCreateAndWrite(directoryPath, texts);
+
+      // const scripts = `
+      //                  git add .
+      //                  git commit -a -m "commit" (do not need commit message either)
+      //                  git push`;
+      const scripts = `ls`;
+      const aux = await runScript(scripts);
+      console.log(aux);
     }
 
     console.log("---------------------------");
@@ -220,7 +228,7 @@ const Main = {
       // const files = await asyncForEachSearchFiles(teams);
       // await asyncForEachRunScript(files);
 
-      await asyncForEachPushRepos();
+      await asyncForEachWriteFiles();
       console.log("FINISH-----");
     } catch (error) {
       console.log(error);
