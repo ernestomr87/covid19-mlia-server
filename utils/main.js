@@ -223,10 +223,10 @@ const Main = {
   initialization: async () => {
     try {
       const teams = await initTeamDb();
-      // await asyncForEachCloneRepos(teams);
-      // const files = await asyncForEachSearchFiles(teams);
-      // await asyncForEachRunScript(files);
-      // await asyncForEachWriteFiles();
+      await asyncForEachCloneRepos(teams);
+      const files = await asyncForEachSearchFiles(teams);
+      await asyncForEachRunScript(files);
+      await asyncForEachWriteFiles();
       console.log("FINISH-----");
     } catch (error) {
       console.log(error);
