@@ -109,7 +109,8 @@ const asyncForEachSearchFiles = async (teams) => {
               ChrF: "",
             };
             console.log(file);
-            allFiles.push(aux);
+            const flag = allFiles.filter((el) => el.name === file);
+            if (!flag.length) allFiles.push(aux);
           }
         });
       }
@@ -203,15 +204,15 @@ const asyncForEachRunScript = async (files) => {
 
 const initTeamDb = async () => {
   try {
-    // const teams = constants.teams.map((item) => {
-    //   if (item.registrationDate)
-    //     item.registrationDate = moment(item.registrationDate).valueOf();
-    //   return item;
-    // });
-    // const docs = await Team.bulkCreate(teams);
-    // return docs;
-    const teams = await Team.findAll();
-    return teams;
+    const teams = constants.teams.map((item) => {
+      if (item.registrationDate)
+        item.registrationDate = moment(item.registrationDate).valueOf();
+      return item;
+    });
+    const docs = await Team.bulkCreate(teams);
+    return docs;
+    // const teams = await Team.findAll();
+    // return teams;
   } catch (error) {
     console.log(error.message);
     throw new ApiError(httpStatus[500], error.message);
@@ -222,10 +223,10 @@ const Main = {
   initialization: async () => {
     try {
       const teams = await initTeamDb();
-      await asyncForEachCloneRepos(teams);
-      const files = await asyncForEachSearchFiles(teams);
-      await asyncForEachRunScript(files);
-      await asyncForEachWriteFiles();
+      // await asyncForEachCloneRepos(teams);
+      // const files = await asyncForEachSearchFiles(teams);
+      // await asyncForEachRunScript(files);
+      // await asyncForEachWriteFiles();
       console.log("FINISH-----");
     } catch (error) {
       console.log(error);

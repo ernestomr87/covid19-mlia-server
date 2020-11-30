@@ -1,6 +1,6 @@
 exports.teams = [
   {
-    team: "Baseline",
+    team: "BASELINE",
     affiliation: "",
     country: "",
     registrationDate: "",
@@ -10,13 +10,22 @@ exports.teams = [
       "https://bitbucket.org/covid19-mlia/sample-participant-repository.git",
   },
   {
-    team: "eTranslation",
+    team: "ETRANSLATION",
     affiliation: "European Commission, DGT and CNECT",
     country: "Luxembourg",
     registrationDate: "2020-10-21T18:30:26+0200",
     contact: "Andreas Eisele",
     email: "andreas.eisele@ec.europa.eu",
     repo: "https://bitbucket.org/covid19-mlia/etranslation.git",
+  },
+  {
+    team: "PROMT",
+    affiliation: "PROMT LLC",
+    country: "Russian Federation",
+    registrationDate: "2020-11-27T11:18:54+0100",
+    contact: "Alexander Molchanov",
+    email: "alexander.molchanov@promt.ru",
+    repo: "https://bitbucket.org/covid19-mlia/promt.git",
   },
   {
     team: "NUIG-ULD",
@@ -65,7 +74,7 @@ exports.teams = [
     repo: "https://bitbucket.org/covid19-mlia/irbits.git",
   },
   {
-    team: "gatenlp",
+    team: "GATENLP",
     affiliation: "University of Sheffield",
     country: "United Kingdom",
     registrationDate: "2020-10-22T13:16:57+0200",
@@ -102,7 +111,7 @@ exports.teams = [
     repo: "https://bitbucket.org/covid19-mlia/cunimtir.git",
   },
   {
-    team: "NLP_TaLenT",
+    team: "NLP_TALENT",
     affiliation: "Universite du Quebec a Montreal",
     country: "Canada",
     registrationDate: "2020-10-22T21:47:20+0200",
@@ -111,7 +120,7 @@ exports.teams = [
     repo: "https://bitbucket.org/covid19-mlia/nlptalent.git",
   },
   {
-    team: "justmt",
+    team: "JUSTMT",
     affiliation: "Jordan University of Science and Technology",
     country: "Jordan",
     registrationDate: "2020-10-24T11:02:14+0200",
@@ -147,7 +156,7 @@ exports.teams = [
     repo: "https://bitbucket.org/covid19-mlia/sunlp.git",
   },
   {
-    team: "Tarjama AI",
+    team: "TARJAMA-AI",
     affiliation: "Tarjama FZ LLC",
     country: "Jordan",
     registrationDate: "2020-10-21T16:47:41+0200",
@@ -190,5 +199,23 @@ exports.teams = [
     contact: "Huiwei Zhou",
     email: "zhouhuiwei@dlut.edu.cn",
     repo: "https://bitbucket.org/covid19-mlia/dutnlp.git",
+  },
+  {
+    team: "AMINE_TEAM",
+    affiliation: "CERIST",
+    country: "Algeria",
+    registrationDate: "2020-11-25T13:25:53+0100",
+    contact: "Amine Aliane",
+    email: "aliane781@gmail.com",
+    repo: "https://bitbucket.org/covid19-mlia/cerist.git",
+  },
+  {
+    team: "ACCENTURE",
+    affiliation: "",
+    country: "",
+    registrationDate: "",
+    contact: "",
+    email: "",
+    repo: "https://bitbucket.org/covid19-mlia/accenture.git",
   },
 ];
