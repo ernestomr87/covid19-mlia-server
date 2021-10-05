@@ -7,7 +7,9 @@ const Team = db.Team;
 /* GET home page. */
 router.get("/", async (req, res, next) => {
   try {
+    const { round } = req.query
     let files = await File.findAll({
+      where: { round: round ? parseInt(round) : 2, remove: false },
       include: [{ model: Team, attributes: ["team"] }],
     });
 

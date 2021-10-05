@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   File.init(
     {
+      round: DataTypes.STRING,
       name: DataTypes.STRING,
       location: DataTypes.STRING,
       src: DataTypes.STRING,
@@ -22,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       BLEU: DataTypes.STRING,
       ChrF: DataTypes.STRING,
+      TER: DataTypes.STRING,
+      BEER: DataTypes.STRING,
+      remove: DataTypes.BOOLEAN,
     },
     {
       sequelize,

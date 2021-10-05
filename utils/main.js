@@ -12,6 +12,27 @@ const git = require("./git");
 const Team = db.Team;
 const File = db.File;
 
+const round = 1
+
+const roundVars = {
+  1: { count: 6 },
+  2: { count: 7 },
+  error: {
+    1: {
+      description: "",
+      BLEU: "#ERROR",
+      ChrF: "#ERROR",
+    },
+    2: {
+      description: "",
+      BLEU: "#ERROR",
+      TER: "#ERROR",
+      BEER: "#ERROR",
+    }
+  }
+
+}
+
 const asyncForEachCloneRepos = async (teams) => {
   try {
     const folder = `${__dirname}`.split("/utils").join("");
@@ -38,9 +59,10 @@ const asyncForEachCloneRepos = async (teams) => {
   }
 };
 
-const asyncForEachWriteFiles = async (teams) => {
+const asyncForEachWriteFiles = async () => {
   try {
     let files = await File.findAll({
+      where: { remove: false },
       include: [{ model: Team }],
     });
 
@@ -50,24 +72,36 @@ const asyncForEachWriteFiles = async (teams) => {
 
     for (let i = 0; i < files.length; i++) {
       const folder = files[i].Team.team;
-      const directoryPath = path.join(
-        __dirname.split("utils").join("repos"),
-        `${folder}/score/task3/round1/${files[i].name
-          .split("sgm")
-          .join("score")}`
-      );
+      let directoryPath;
+      if (round === 1) {
+        directoryPath = path.join(
+          __dirname.split("utils").join("repos"),
+          `${folder}/score/task3/round1/${files[i].name
+            .split("sgm")
+            .join("score")}`
+        );
+      } else if (round === 2) {
+        directoryPath = path.join(
+          __dirname.split("utils").join("repos"),
+          `${folder}/score/task3/round2/${files[i].name
+            .split("sgm")
+            .join("score")}`
+        );
+      }
 
       const texts = [];
       texts.push(`BLEU ${files[i].BLEU}`);
       texts.push(`ChrF ${files[i].ChrF}`);
+
+      texts.push(`TER ${files[i].TER}`);
+      texts.push(`BEER ${files[i].BEER}`);
 
       await runCreateAndWrite(directoryPath, texts);
 
       //bitbucket.org/covid19-mlia/sample-participant-repository.git
       const repo = files[i].Team.repo.split("https://").join("");
       const script = `bash /home/ubuntu/covid-19/covid19-mlia-server/utils/run.sh ${folder} ${repo}`;
-      const aux = await runScript(script);
-      console.log(aux);
+      await runScript(script);
     }
 
     console.log("---------------------------");
@@ -84,10 +118,21 @@ const asyncForEachSearchFiles = async (teams) => {
     const allFiles = [];
     for (let i = 0; i < teams.length; i++) {
       const folder = teams[i].team;
-      const directoryPath = path.join(
-        __dirname.split("utils").join("repos"),
-        `${folder}/submission/task3/round1`
-      );
+      let directoryPath;
+      if (round === 1) {
+        directoryPath = path.join(
+          __dirname.split("utils").join("repos"),
+          `${folder}/submission/task3/round1`
+        );
+      } else if (round === 2) {
+        directoryPath = path.join(
+          __dirname.split("utils").join("repos"),
+          `${folder}/submission/task3/round2`
+        );
+      }
+
+
+
 
       if (fs.existsSync(directoryPath)) {
         const files = await fs.readdirSync(directoryPath);
@@ -99,6 +144,7 @@ const asyncForEachSearchFiles = async (teams) => {
             tgt = vars[3].split("2")[1];
 
             const aux = {
+              round: round,
               TeamId: teams[i].id,
               name: file,
               location: `${directoryPath}/${file}`,
@@ -107,26 +153,28 @@ const asyncForEachSearchFiles = async (teams) => {
               constrained: vars[4] === "constrained",
               BLEU: "",
               ChrF: "",
+              TER: "",
+              BEER: "",
             };
-            console.log(file);
             const flag = allFiles.filter((el) => el.name === file);
             if (!flag.length) allFiles.push(aux);
           }
         });
       }
     }
-    await File.destroy({
-      where: {},
-      truncate: true,
+    await File.update({
+      remove: true
+    }, {
+      where: { round: round }
     });
     let docs = await File.bulkCreate(allFiles);
+    console.log("---------------------Docs", docs.length)
     docs = docs.map((doc) => {
       return doc.get({ plain: true });
     });
-
     return docs;
   } catch (error) {
-    console.log(error);
+    console.log("ERROR->", error);
     throw new Error(error.message);
   }
 };
@@ -160,32 +208,60 @@ const runCreateAndWrite = (file, texts) => {
 const asyncForEachRunScript = async (files) => {
   try {
     for (let i = 0; i < files.length; i++) {
-      const script = `bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests/en-${files[i].tgt}/ref_test_en${files[i].tgt}.${files[i].tgt}.sgm ${files[i].location}`;
-      console.log(script);
+      let script
+
+      if (round === 1) {
+        script = `bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests/en-${files[i].tgt}/ref_test_en${files[i].tgt}.${files[i].tgt}.sgm ${files[i].location}`;
+      } else if (round === 2) {
+        script = `bash /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/calc_scores2.sh /home/ubuntu/eval_competition/covid19mlia-mt-evaluation/tests2/test-en${files[i].tgt}-ref.${files[i].tgt}.sgm ${files[i].location}`
+      }
+      console.log(script)
       const dataOk = await runScript(script);
-      console.log("Ok");
-      console.log(dataOk);
       const aux = dataOk.split(" ");
-      if (aux.length === 6) {
-        await File.update(
-          {
+      console.log(aux)
+
+      // const aux = ['baseline', 'en2fr', 'constrained', 'test', '0.0', '100.0', '1.7\n']
+      if (aux.length === roundVars[round].count) {
+        if (round === 1) {
+          await File.update(
+            {
+              description: aux[3],
+              BLEU: aux[4],
+              ChrF: aux[5],
+            },
+            {
+              where: {
+                id: files[i].id,
+              },
+            }
+          );
+        }
+        if (round === 2) {
+          console.log("UPDTE ROUND 2  [4,5,6]", {
             description: aux[3],
             BLEU: aux[4],
-            ChrF: aux[5],
-          },
-          {
+            TER: aux[5],
+            BEER: aux[6],
+          }, files[i].id)
+
+
+          await File.update({
+            description: aux[3],
+            BLEU: parseFloat(aux[4]),
+            TER: parseFloat(aux[5]),
+            BEER: parseFloat(aux[6]),
+          }, {
             where: {
-              id: files[i].id,
-            },
-          }
-        );
+              id: files[i].id, round
+            }
+          })
+        }
+
       } else {
+
+
         await File.update(
-          {
-            description: "",
-            BLEU: "#ERROR",
-            ChrF: "#ERROR",
-          },
+          roundVars.error[round],
           {
             where: {
               id: files[i].id,
@@ -211,8 +287,8 @@ const initTeamDb = async () => {
     // });
     // const docs = await Team.bulkCreate(teams);
     // return docs;
-    const teams = await Team.findAll();
-    return teams;
+    const _teams = await Team.findAll();
+    return _teams;
   } catch (error) {
     console.log(error.message);
     throw new ApiError(httpStatus[500], error.message);
