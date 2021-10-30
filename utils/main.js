@@ -1,18 +1,19 @@
 const fs = require("fs");
 const httpStatus = require("http-status");
 const path = require("path");
-const moment = require("moment");
+// const moment = require("moment");
 const exec = require("child_process").exec;
 
 const ApiError = require("./ApiError");
 const db = require("./../models");
-const constants = require("../constants");
+// const constants = require("../constants");
 const git = require("./git");
 
 const Team = db.Team;
 const File = db.File;
 
-const round = 1
+const round = 2
+console.log("ROUND", round)
 
 const roundVars = {
   1: { count: 6 },
@@ -80,6 +81,7 @@ const asyncForEachWriteFiles = async () => {
             .split("sgm")
             .join("score")}`
         );
+        console.log("*********", directoryPath)
       } else if (round === 2) {
         directoryPath = path.join(
           __dirname.split("utils").join("repos"),
@@ -87,6 +89,7 @@ const asyncForEachWriteFiles = async () => {
             .split("sgm")
             .join("score")}`
         );
+        console.log("*********", directoryPath)
       }
 
       const texts = [];
@@ -124,11 +127,13 @@ const asyncForEachSearchFiles = async (teams) => {
           __dirname.split("utils").join("repos"),
           `${folder}/submission/task3/round1`
         );
+        console.log("*********", directoryPath)
       } else if (round === 2) {
         directoryPath = path.join(
           __dirname.split("utils").join("repos"),
           `${folder}/submission/task3/round2`
         );
+        console.log("*********", directoryPath)
       }
 
 
@@ -256,10 +261,7 @@ const asyncForEachRunScript = async (files) => {
             }
           })
         }
-
       } else {
-
-
         await File.update(
           roundVars.error[round],
           {

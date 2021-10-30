@@ -7,11 +7,9 @@ var logger = require("morgan");
 var main = require("./utils/main");
 
 main.initialization();
-
-// main.initialization();
-setInterval(() => {
-  main.initialization();
-}, 1000 * 60 * 30);
+// setInterval(() => {
+//   main.initialization();
+// }, 1000 * 60 * 15);
 
 // const db = require("./models");
 // db.sequelize.sync({ force: true }).then(() => {
